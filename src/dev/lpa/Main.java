@@ -1,5 +1,6 @@
 package dev.lpa;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -28,9 +29,22 @@ public class Main {
 
   public static void main(String[] args) {
 
-    Stream.generate(Person::new)
-      .limit(10)
-      .sorted(Comparator.comparing(Person::lastName))
-      .forEach(System.out::println);
+    var persons = Stream.generate(Person::new)
+        .limit(10)
+        .sorted(Comparator.comparing(Person::lastName))
+        .toArray();
+
+    System.out.println("Persons array:");
+    for (var p : persons) {
+      System.out.println(p.toString());
+    }
+
+    System.out.println("--------------------------");
+
+    System.out.println("Persons stream:");
+    Arrays.stream(persons)
+      .parallel()
+      .forEachOrdered(System.out::println); // keeps the source order for a parallel stream
+//      .forEach(System.out::println);
   }
 }
