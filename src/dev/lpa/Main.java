@@ -1,6 +1,7 @@
 package dev.lpa;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -67,6 +68,11 @@ public class Main {
     words.forEach(System.out::println);
     System.out.println("------------------------------");
 
+    var backTogetherAgain = words
+      .parallelStream()
+//      .reduce("", (st, s) ->  st += s + " ", String::concat);
+      .collect(Collectors.joining(" "));
 
+    System.out.println(backTogetherAgain);
   }
 }
