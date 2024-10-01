@@ -1,6 +1,8 @@
 package dev.lpa;
 
+import java.util.Comparator;
 import java.util.Random;
+import java.util.stream.Stream;
 
 record Person(String firstName, String lastName, int age) {
 
@@ -26,6 +28,9 @@ public class Main {
 
   public static void main(String[] args) {
 
-
+    Stream.generate(Person::new)
+      .limit(10)
+      .sorted(Comparator.comparing(Person::lastName))
+      .forEach(System.out::println);
   }
 }
