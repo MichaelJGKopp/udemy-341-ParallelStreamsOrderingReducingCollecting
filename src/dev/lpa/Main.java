@@ -73,6 +73,24 @@ public class Main {
 //      .reduce("", (st, s) ->  st += s + " ", String::concat);
       .collect(Collectors.joining(" "));
 
-    System.out.println(backTogetherAgain);
+    System.out.println(backTogetherAgain + "\n");
+
+    System.out.println("------------------------------");
+
+    var lastNameCounts =
+      Stream.generate(Person::new)
+        .limit(10_000)
+        .parallel()
+        .collect(Collectors.groupingBy(Person::lastName, Collectors.counting()));
+    // not efficient to use parallel here for recombining map streams
+
+    System.out.println("lastNameCounts:");
+    lastNameCounts.entrySet().forEach(System.out::println);
+
+    long total = 0;
+    for ( var count : lastNameCounts.values()) {
+      total += count;
+    }
+    System.out.println("Total count: " + total);
   }
 }
