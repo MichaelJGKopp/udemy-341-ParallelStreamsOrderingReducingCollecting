@@ -1,8 +1,6 @@
 package dev.lpa;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -56,6 +54,19 @@ public class Main {
       .reduce(0, Integer::sum);
 
     System.out.println("The sum of the numbers is:" + sum);
+
+    String humptyDumpty = """
+      Humpty Dumpty sat on a Wall.
+      Humpty Dumpty had a great fall.
+      All the king's horses and all the king's men
+      couldn't put Humpty together again.
+      """;
+
+    System.out.println("------------------------------");
+    var words = new Scanner(humptyDumpty).tokens().toList();
+    words.forEach(System.out::println);
+    System.out.println("------------------------------");
+
 
   }
 }
