@@ -3,6 +3,7 @@ package dev.lpa;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 record Person(String firstName, String lastName, int age) {
@@ -45,6 +46,16 @@ public class Main {
     Arrays.stream(persons)
       .parallel()
       .forEachOrdered(System.out::println); // keeps the source order for a parallel stream
+    // increases overhead
 //      .forEach(System.out::println);
+
+    System.out.println("--------------------------");
+
+    int sum = IntStream.range(1, 101)
+      .parallel()
+      .reduce(0, Integer::sum);
+
+    System.out.println("The sum of the numbers is:" + sum);
+
   }
 }
