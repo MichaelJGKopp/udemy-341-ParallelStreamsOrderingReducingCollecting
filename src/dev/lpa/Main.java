@@ -16,6 +16,11 @@ record Person(String firstName, String lastName, int age) {
       lasts[random.nextInt(lasts.length)],
       random.nextInt(18, 100));
   }
+
+  @Override
+  public String toString() {
+    return "%s, %s (%d)".formatted(firstName, lastName, age);
+  }
 }
 public class Main {
 
