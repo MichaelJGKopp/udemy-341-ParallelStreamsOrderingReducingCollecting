@@ -19,8 +19,7 @@ public class VisitorsList {
       System.out.println("Adding " + visitor);
       boolean queued = false;
       try {
-        newVisitors.put(visitor);
-        queued = true;
+        queued = newVisitors.offer(visitor, 5, TimeUnit.SECONDS);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
