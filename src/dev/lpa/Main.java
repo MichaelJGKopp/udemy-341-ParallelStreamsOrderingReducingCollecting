@@ -114,5 +114,25 @@ public class Main {
     System.out.println("Total count: " + total);
 
     System.out.println(lastCounts.getClass().getName());
+
+    System.out.println("---------------------------------------");
+
+    // side-effects, stream will not create map but add or modify
+    var lastCounts2 = Collections.synchronizedMap(
+      new TreeMap<String, Long>()); // TreeMap alternative, sorted
+    Stream.generate(Person::new)
+      .limit(10_000)
+      .parallel()
+      .forEach((person) -> lastCounts2.merge(person.lastName(), 1L, Long::sum));
+
+    System.out.println(lastCounts2);
+
+    total = 0;
+    for ( var count : lastCounts2.values()) {
+      total += count;
+    }
+    System.out.println("Total count: " + total);
+
+    System.out.println(lastCounts2.getClass().getName());
   }
 }
