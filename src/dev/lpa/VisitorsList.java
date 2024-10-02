@@ -1,5 +1,11 @@
 package dev.lpa;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,6 +33,19 @@ public class VisitorsList {
         System.out.println(newVisitors);
       } else {
         System.out.println("Queue is Full, can not add " + visitor);
+        System.out.println("Draining Queue and writing data to file");
+        List<Person> tempList = new ArrayList<>();
+        newVisitors.drainTo(tempList);
+        List<String> lines = new ArrayList<>();
+        tempList.forEach(customer -> lines.add(customer.toString()));
+        lines.add(visitor.toString());
+
+        try {
+          Files.write(Path.of("DrainedQueue.txt"), lines,
+            StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
       }
     };
 
@@ -38,7 +57,7 @@ public class VisitorsList {
 
     while (true) {
       try {
-        if (!producerExecutor.awaitTermination(10, TimeUnit.SECONDS)) {
+        if (!producerExecutor.awaitTermination(20, TimeUnit.SECONDS)) {
           break;
         }
       } catch (InterruptedException e) {
