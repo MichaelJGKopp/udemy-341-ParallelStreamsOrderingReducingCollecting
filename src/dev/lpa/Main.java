@@ -1,6 +1,7 @@
 package dev.lpa;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -95,5 +96,23 @@ public class Main {
 
     System.out.println(lastNameCounts.getClass().getName());
 
+    System.out.println("---------------------------------------");
+
+    // side-effects, stream will not create map but add or modify
+    var lastCounts = new ConcurrentSkipListMap<String, Long>(); // TreeMap alternative, sorted
+    Stream.generate(Person::new)
+      .limit(10_000)
+      .parallel()
+      .forEach((person) -> lastCounts.merge(person.lastName(), 1L, Long::sum));
+
+    System.out.println(lastCounts);
+
+    total = 0;
+    for ( var count : lastCounts.values()) {
+      total += count;
+    }
+    System.out.println("Total count: " + total);
+
+    System.out.println(lastCounts.getClass().getName());
   }
 }
