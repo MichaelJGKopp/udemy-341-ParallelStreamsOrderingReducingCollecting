@@ -19,9 +19,10 @@ public class VisitorsList {
       System.out.println("Adding " + visitor);
       boolean queued = false;
       try {
-        queued = newVisitors.add(visitor);
-      } catch (IllegalStateException e) {
-        System.out.println("Illegal state exception!");
+        newVisitors.put(visitor);
+        queued = true;
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
       }
       if (queued) {
         System.out.println(newVisitors);
